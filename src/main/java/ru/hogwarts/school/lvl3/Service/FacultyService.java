@@ -1,39 +1,39 @@
 package ru.hogwarts.school.lvl3.Service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.lvl3.Model.Faculty;
 import ru.hogwarts.school.lvl3.Model.Student;
+import ru.hogwarts.school.lvl3.repositories.FacultyRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 @Service
 public class FacultyService {
-    HashMap<Long, Faculty> facultyHashMap = new HashMap<>();
-    private Long countIdFaculty = 1L;
+    private final FacultyRepository facultyRepository;
+
+    public FacultyService(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
 
     public Faculty createStudent(Faculty faculty) {
-        facultyHashMap.put(countIdFaculty, faculty);
-        countIdFaculty++;
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
     public Faculty readStudent(Long id) {
-        return facultyHashMap.get(id);
+        return facultyRepository.findById(id).get();
     }
 
     public Faculty updateStudent(Long id, Faculty faculty) {
-        if(!facultyHashMap.containsKey(id)){
-            return null;
-        }
-        facultyHashMap.put(id, faculty);
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
-    public Faculty deleteStudent(Long id) {
-        return facultyHashMap.remove(id);
+    public void deleteStudent(Long id) {
+        facultyRepository.deleteById(id);
     }
 
+    /*
     public Collection<Faculty> findColor(String color) {
         ArrayList<Faculty> colors = new ArrayList<>();
         for (Faculty faculty:facultyHashMap.values()){
@@ -42,4 +42,6 @@ public class FacultyService {
         }
        return colors;
     }
+
+     */
 }

@@ -1,8 +1,11 @@
 package ru.hogwarts.school.lvl3.Service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.lvl3.Model.Faculty;
 import ru.hogwarts.school.lvl3.Model.Student;
+import ru.hogwarts.school.lvl3.repositories.StudentRepository;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,31 +13,30 @@ import java.util.HashMap;
 
 @Service
 public class StudentService {
-    private HashMap<Long, Student> studentHashMap = new HashMap<>();
-    private Long countIdStudent = 1L;
+    private final StudentRepository studentRepository;
+
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
+
 
     public Student createStudent(Student student) {
-        studentHashMap.put(countIdStudent, student);
-        countIdStudent++;
-        return student;
+        return studentRepository.save(student);
     }
 
     public Student readStudent(Long id) {
-        return studentHashMap.get(id);
+        return studentRepository.findById(id).get();
     }
 
     public Student updateStudent(Long id, Student student) {
-        if (!studentHashMap.containsKey(id)) {
-            return null;
-        }
-        studentHashMap.put(id, student);
-        return student;
+        return studentRepository.save(student);
     }
 
-    public Student deleteStudent(Long id) {
-        return studentHashMap.remove(id);
-    }
+    public void deleteStudent(Long id) {
+        studentRepository.deleteById(id);
 
+    }
+    /*
     public Collection<Student> findAge(int age) {
         ArrayList<Student> students = new ArrayList<>();
         for (Student student : studentHashMap.values()) {
@@ -45,4 +47,6 @@ public class StudentService {
         }
         return students;
     }
+
+     */
 }
