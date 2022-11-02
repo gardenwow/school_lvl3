@@ -9,30 +9,33 @@ import ru.hogwarts.school.lvl3.Service.FacultyService;
 
 import java.util.Collection;
 import java.util.Collections;
-
-@RequestMapping("faculty")
 @RestController
+@RequestMapping("/faculty")
 public class FacultyController {
     private final FacultyService facultyService;
 
     public FacultyController(FacultyService facultyService) {
         this.facultyService = facultyService;
     }
+
+
     @GetMapping("{id}")
-    public ResponseEntity<Faculty> getStudent(@PathVariable Long id){
+    public ResponseEntity<Faculty> getStudent(@PathVariable long id){
         Faculty faculty = facultyService.readStudent(id);
         if (faculty == null){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(faculty);
     }
+
+
     @PostMapping
     public ResponseEntity<Faculty> createStudent(@RequestBody Faculty faculty){
         Faculty createFaculty = facultyService.createStudent(faculty);
         return ResponseEntity.ok(createFaculty);
     }
     @PutMapping()
-    public ResponseEntity<Faculty> updateStudent(@RequestBody Faculty faculty, @PathVariable Long id){
+    public ResponseEntity<Faculty> updateStudent(@RequestBody Faculty faculty, @PathVariable long id){
         Faculty updateFaculty = facultyService.updateStudent(id, faculty);
         if (updateFaculty == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

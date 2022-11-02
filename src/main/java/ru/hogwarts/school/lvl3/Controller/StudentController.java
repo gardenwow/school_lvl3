@@ -9,7 +9,7 @@ import ru.hogwarts.school.lvl3.Service.StudentService;
 import java.util.Collection;
 import java.util.Collections;
 
-@RequestMapping("student")
+@RequestMapping("/student")
 @RestController
 public class StudentController {
     private final StudentService studentService;
@@ -20,7 +20,7 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Student> getStudent(@PathVariable Long id){
+    public ResponseEntity<Student> getStudent(@PathVariable long id){
         Student student = studentService.readStudent(id);
         if (student == null){
             return ResponseEntity.notFound().build();
@@ -38,7 +38,7 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
     @DeleteMapping("{id}")
-    public ResponseEntity deleteStudent(@PathVariable Long id){
+    public ResponseEntity deleteStudent(@PathVariable long id){
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
 

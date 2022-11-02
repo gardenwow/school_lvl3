@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.HashMap;
 @Service
 public class FacultyService {
+
     private final FacultyRepository facultyRepository;
 
     public FacultyService(FacultyRepository facultyRepository) {
@@ -21,15 +22,15 @@ public class FacultyService {
         return facultyRepository.save(faculty);
     }
 
-    public Faculty readStudent(Long id) {
+    public Faculty readStudent(long id) {
         return facultyRepository.findById(id).get();
     }
 
-    public Faculty updateStudent(Long id, Faculty faculty) {
+    public Faculty updateStudent(   long id, Faculty faculty) {
         return facultyRepository.save(faculty);
     }
 
-    public void deleteStudent(Long id) {
+    public void deleteStudent(long id) {
         facultyRepository.deleteById(id);
     }
 

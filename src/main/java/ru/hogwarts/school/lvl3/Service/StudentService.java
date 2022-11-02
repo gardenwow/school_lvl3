@@ -24,15 +24,15 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Student readStudent(Long id) {
+    public Student readStudent(long id) {
         return studentRepository.findById(id).get();
     }
 
-    public Student updateStudent(Long id, Student student) {
+    public Student updateStudent(long id, Student student) {
         return studentRepository.save(student);
     }
 
-    public void deleteStudent(Long id) {
+    public void deleteStudent(long id) {
         studentRepository.deleteById(id);
 
     }
