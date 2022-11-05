@@ -33,6 +33,11 @@ public class FacultyService {
     public void deleteStudent(long id) {
         facultyRepository.deleteById(id);
     }
+    public Collection<Faculty> findColorAndName(String name, String color){
+        return facultyRepository.findByNameAndColorIgnoreCase(name, color);
+
+
+    }
 
     /*
     public Collection<Faculty> findColor(String color) {

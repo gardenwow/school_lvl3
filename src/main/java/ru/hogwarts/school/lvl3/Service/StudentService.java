@@ -36,6 +36,10 @@ public class StudentService {
         studentRepository.deleteById(id);
 
     }
+
+    public Collection <Student> findBetweenAge(int a, int b){
+        return studentRepository.findByAgeBetween(a, b);
+    }
     /*
     public Collection<Student> findAge(int age) {
         ArrayList<Student> students = new ArrayList<>();

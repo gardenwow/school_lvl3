@@ -23,25 +23,28 @@ public class StudentController {
     public ResponseEntity<Student> getStudent(@PathVariable long id){
         Student student = studentService.readStudent(id);
         if (student == null){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(student);
+    }
+    @GetMapping
+    public ResponseEntity findBetweenAge(@RequestParam(required = false) int a,
+                                         @RequestParam(required = false) int b){
+        return ResponseEntity.ok(studentService.findBetweenAge(a, b));
     }
     @PostMapping
     public ResponseEntity<Student> createStudent(@RequestBody Student student){
         Student createStudent = studentService.createStudent(student);
-        return ResponseEntity.ok(student);
+        return ResponseEntity.ok(createStudent);
     }
     @PutMapping()
     public ResponseEntity<Student> updateStudent(@RequestBody Student student){
         Student updateStudent = studentService.updateStudent(student.getId(), student);
-        return ResponseEntity.ok(student);
+        return ResponseEntity.ok(updateStudent);
     }
     @DeleteMapping("{id}")
-    public ResponseEntity deleteStudent(@PathVariable long id){
-        studentService.deleteStudent(id);
-        return ResponseEntity.ok().build();
-
+    public void deleteStudent(@PathVariable long id){
+         studentService.deleteStudent(id);
     }
    /*
     @GetMapping

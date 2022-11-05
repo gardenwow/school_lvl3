@@ -47,14 +47,12 @@ public class FacultyController {
     public ResponseEntity deleteStudent(@PathVariable Long id){
         return ResponseEntity.ok().build();
     }
-    /*
+
     @GetMapping
-    public ResponseEntity<Collection<Faculty>> findColor(@RequestParam(required = false) String color){
-        if(color != null && color.isBlank()){
-            return ResponseEntity.ok(facultyService.findColor(color));
-        }
-        return ResponseEntity.ok(Collections.emptyList());
+    public ResponseEntity<Collection<Faculty>> findColor(@RequestParam(required = false) String name,
+                                                         @RequestParam(required = false) String color){
+
+        return ResponseEntity.ok(facultyService.findColorAndName(name, color));
     }
 
-     */
 }
