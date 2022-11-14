@@ -7,18 +7,22 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.lvl3.Model.Avatar;
 import ru.hogwarts.school.lvl3.Model.Student;
 import ru.hogwarts.school.lvl3.Service.StudentService;
+import ru.hogwarts.school.lvl3.repositories.StudentRepository;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 
 @RequestMapping("/student")
 @RestController
 public class StudentController {
     private final StudentService studentService;
+
 
 
     public StudentController(StudentService studentService) {
@@ -66,6 +70,21 @@ public class StudentController {
             is.transferTo(os);
         }
     }
+
+    @GetMapping("/Count-students")
+    public Integer getCountStudents(){
+       return studentService.getCountStudents();
+    }
+
+    @GetMapping("/averageAge")
+    public Integer avgAgeStudents(){
+        return studentService.getAverageAgeStudents();
+    }
+    @GetMapping("/lastFive")
+    public Collection<Student> lastFiveStudents(){
+        return studentService.getLastFiveStudent();
+    }
+
 
    /*
     @GetMapping
