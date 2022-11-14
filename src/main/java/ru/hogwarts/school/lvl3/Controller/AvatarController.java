@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 @RestController
 @RequestMapping
@@ -32,6 +33,13 @@ public class AvatarController {
                                                @RequestParam MultipartFile avatar) throws IOException {
         avatarService.uploadAvatar(id, avatar);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/avatar")
+    public ResponseEntity<List<Avatar>> getPage(@RequestParam("page") Integer pageNumber,
+                                                @RequestParam("size") Integer pageSize){
+        List<Avatar> avatars = avatarService.getPage(pageNumber, pageSize);
+        return ResponseEntity.ok(avatars);
     }
 
 

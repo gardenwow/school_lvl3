@@ -15,6 +15,9 @@ import java.nio.file.Path;
 import java.util.Collection;
 import javax.imageio.ImageIO;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaBuilder;
+
+import antlr.actions.python.CodeLexer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,5 +67,16 @@ public class StudentService {
     public Collection<Student> findBetweenAge(int a, int b) {
         return studentRepository.findByAgeBetween(a, b);
 
+    }
+
+    public Integer getCountStudents(){
+        return studentRepository.findStudens();
+    }
+
+    public Integer getAverageAgeStudents(){
+        return studentRepository.averageAgeStudent();
+    }
+    public Collection<Student> getLastFiveStudent(){
+        return studentRepository.lastFiveStudent();
     }
 }
