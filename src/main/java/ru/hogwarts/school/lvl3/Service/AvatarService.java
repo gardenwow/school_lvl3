@@ -1,5 +1,7 @@
 package ru.hogwarts.school.lvl3.Service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,8 @@ public class AvatarService {
     @Value("${student.avatar.dir.path}")
     private String avatarDir;
 
+    Logger logger = LoggerFactory.getLogger(AvatarService.class);
+
     private final StudentService studentService;
     private final AvatarRepository avatarRepository;
 
@@ -40,6 +44,7 @@ public class AvatarService {
     }
 
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+        logger.debug("will be metods uploadAvatar {}", studentId );
         Student student = studentService.findStudent(studentId);
         Path filePath = Path.of(avatarDir, studentId + "."
                 + getExtension(Objects.requireNonNull(avatarFile.getOriginalFilename())));
@@ -65,6 +70,7 @@ public class AvatarService {
     }
 
     private byte[] generateAvatarForDB(Path filePath) throws IOException {
+        logger.debug("загрузка в БД");
         try (InputStream is = Files.newInputStream(filePath);
              BufferedInputStream bis = new BufferedInputStream(is, 1024);
              ByteArrayOutputStream baos = new ByteArrayOutputStream()
@@ -83,6 +89,7 @@ public class AvatarService {
     }
 
     public Avatar findAvatar(long studentId) {
+        logger.debug("use find avatar");
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
@@ -92,6 +99,7 @@ public class AvatarService {
     }
 
     public List<Avatar> getPage(Integer pageNumber, Integer pageSize) {
+        logger.debug("постраничное ");
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         return avatarRepository.findAll(pageRequest).getContent();
     }

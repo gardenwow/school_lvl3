@@ -18,7 +18,10 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaBuilder;
 
 import antlr.actions.python.CodeLexer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.lvl3.Model.Avatar;
@@ -31,6 +34,7 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
+    Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
         this.studentRepository = studentRepository;
@@ -38,24 +42,29 @@ public class StudentService {
     }
 
     public Student addStudent(Student student) {
+        logger.debug("добавление студента студента");
         student.setId(null);
         return studentRepository.save(student);
     }
 
     public Student findStudent(long id) {
+        logger.debug("поиск студента");
         return studentRepository.findById(id).orElseThrow();
     }
 
     public Student editStudent(Student student) {
+        logger.debug("редактирование студента");
         return studentRepository.save(student);
     }
 
     public void deleteStudent(long id) {
+        logger.debug("удаление студента");
         studentRepository.deleteById(id);
     }
 
 
     public Avatar findAvatar(long studentId) {
+        logger.debug("поиск аватара студента");
         return avatarRepository.findByStudentId(studentId).orElseThrow();
     }
 
@@ -65,6 +74,7 @@ public class StudentService {
 
 
     public Collection<Student> findBetweenAge(int a, int b) {
+        logger.debug("поиск студента по возрасту");
         return studentRepository.findByAgeBetween(a, b);
 
     }
