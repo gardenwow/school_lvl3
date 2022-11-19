@@ -1,5 +1,6 @@
 package ru.hogwarts.school.lvl3.Controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -94,6 +95,17 @@ public class StudentController {
         return studentService.getAvgStudentSteram();
     }
 
+
+    @GetMapping("/Threads")
+    public HttpStatus getSoutStudent(){
+        studentService.getSoutStudent();
+        return HttpStatus.OK;
+    }
+    @GetMapping("/ThreadsSynx")
+    public HttpStatus getSoutStudentSynx(){
+        studentService.getSoutStudentSynx();
+        return HttpStatus.OK;
+    }
 
 
 

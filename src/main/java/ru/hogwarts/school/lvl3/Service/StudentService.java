@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
@@ -36,6 +37,8 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
     private final Logger logger = LoggerFactory.getLogger(StudentService.class);
+    private Integer count=0;
+    private final Object flag = new Object();
 
     public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
         this.studentRepository = studentRepository;
@@ -103,5 +106,48 @@ public class StudentService {
         return studentRepository.findAll().stream()
                 .mapToDouble(e-> e.getAge())
                 .average().getAsDouble();
+    }
+
+    public void getSoutStudent() {
+       // studentRepository.findAll().forEach(System.out::println);
+        ArrayList<Student> thread = new ArrayList<>(studentRepository.findAll());
+        System.out.println(thread.get(0));
+        System.out.println(thread.get(1));
+        Thread thread1 = new Thread(()-> {
+            System.out.println(thread.get(2));
+            System.out.println(thread.get(3));
+        });
+        thread1.start();
+        Thread thread2 = new Thread(()-> {
+            System.out.println(thread.get(4));
+            System.out.println(thread.get(5));
+        });
+        thread2.start();
+
+    }
+
+    public void getSoutStudentSynx() {
+        ArrayList<Student> thread = new ArrayList<>(studentRepository.findAll());
+        count = 0;
+        doSout(thread);
+        doSout(thread);
+        new Thread(()-> {
+            doSout(thread);
+            doSout(thread);
+        }).start();
+        Thread thread2 = new Thread(()-> {
+            doSout(thread);
+            doSout(thread);
+        });
+        thread2.start();
+    }
+    private void doSout(ArrayList<Student> students){
+        if (students.size()-1<count){
+            throw new RuntimeException();
+        }
+        synchronized (flag) {
+            System.out.println("students.get(count).getName() = " + students.get(count).getName());
+            count++;
+        }
     }
 }
