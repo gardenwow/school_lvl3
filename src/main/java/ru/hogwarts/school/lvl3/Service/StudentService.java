@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -88,5 +89,19 @@ public class StudentService {
     }
     public Collection<Student> getLastFiveStudent(){
         return studentRepository.lastFiveStudent();
+    }
+
+    public Collection<String> getSortStudentUpperCase(){
+        return studentRepository.findAll().stream()
+                .map(e -> e.getName().toUpperCase())
+                .filter(n -> n.charAt(0)=='A')
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public Double getAvgStudentSteram(){
+        return studentRepository.findAll().stream()
+                .mapToDouble(e-> e.getAge())
+                .average().getAsDouble();
     }
 }

@@ -85,6 +85,17 @@ public class StudentController {
         return studentService.getLastFiveStudent();
     }
 
+    @GetMapping("/searchA")
+    public Collection<String> getSearchStudentA(){
+        return studentService.getSortStudentUpperCase();
+    }
+    @GetMapping("/searchAVG")
+    public Double getAvgStStream(){
+        return studentService.getAvgStudentSteram();
+    }
+
+
+
 
    /*
     @GetMapping
