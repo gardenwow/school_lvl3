@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import javax.persistence.EntityNotFoundException;
@@ -24,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.lvl3.Model.Avatar;
@@ -48,6 +50,7 @@ public class StudentService {
     public Student addStudent(Student student) {
         logger.debug("добавление студента студента");
         student.setId(null);
+
         return studentRepository.save(student);
     }
 
@@ -110,12 +113,13 @@ public class StudentService {
 
     public void getSoutStudent() {
        // studentRepository.findAll().forEach(System.out::println);
-        ArrayList<Student> thread = new ArrayList<>(studentRepository.findAll());
+        List<Student> thread = new ArrayList<>(studentRepository.findAll());
         System.out.println(thread.get(0));
         System.out.println(thread.get(1));
         Thread thread1 = new Thread(()-> {
             System.out.println(thread.get(2));
             System.out.println(thread.get(3));
+            thread.subList(2,3);
         });
         thread1.start();
         Thread thread2 = new Thread(()-> {
@@ -127,27 +131,12 @@ public class StudentService {
     }
 
     public void getSoutStudentSynx() {
-        ArrayList<Student> thread = new ArrayList<>(studentRepository.findAll());
-        count = 0;
-        doSout(thread);
-        doSout(thread);
-        new Thread(()-> {
-            doSout(thread);
-            doSout(thread);
-        }).start();
-        Thread thread2 = new Thread(()-> {
-            doSout(thread);
-            doSout(thread);
-        });
-        thread2.start();
+        List<Student> thread = new ArrayList<>(studentRepository.findAll());
+        System.out.println(thread.get(0));
+        System.out.println(thread.get(1));
+
+        new Thread(()-> {thread.subList(2,3);}).start();
+        new Thread(()-> {thread.subList(4,5);}).start();
     }
-    private void doSout(ArrayList<Student> students){
-        if (students.size()-1<count){
-            throw new RuntimeException();
-        }
-        synchronized (flag) {
-            System.out.println("students.get(count).getName() = " + students.get(count).getName());
-            count++;
-        }
-    }
+
 }
