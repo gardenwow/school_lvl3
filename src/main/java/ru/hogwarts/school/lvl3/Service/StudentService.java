@@ -130,7 +130,7 @@ public class StudentService {
 
     }
 
-    public void getSoutStudentSynx() {
+    public synchronized void getSoutStudentSynx() {
         List<Student> thread = new ArrayList<>(studentRepository.findAll());
         System.out.println(thread.get(0));
         System.out.println(thread.get(1));
