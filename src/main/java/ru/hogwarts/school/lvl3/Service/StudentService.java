@@ -39,7 +39,7 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
     private final Logger logger = LoggerFactory.getLogger(StudentService.class);
-    private Integer count=0;
+    private Integer count = 0;
     private final Object flag = new Object();
 
     public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
@@ -86,43 +86,44 @@ public class StudentService {
 
     }
 
-    public Integer getCountStudents(){
+    public Integer getCountStudents() {
         return studentRepository.findStudens();
     }
 
-    public Integer getAverageAgeStudents(){
+    public Integer getAverageAgeStudents() {
         return studentRepository.averageAgeStudent();
     }
-    public Collection<Student> getLastFiveStudent(){
+
+    public Collection<Student> getLastFiveStudent() {
         return studentRepository.lastFiveStudent();
     }
 
-    public Collection<String> getSortStudentUpperCase(){
+    public Collection<String> getSortStudentUpperCase() {
         return studentRepository.findAll().stream()
                 .map(e -> e.getName().toUpperCase())
-                .filter(n -> n.charAt(0)=='A')
+                .filter(n -> n.charAt(0) == 'A')
                 .sorted()
                 .collect(Collectors.toList());
     }
 
-    public Double getAvgStudentSteram(){
+    public Double getAvgStudentSteram() {
         return studentRepository.findAll().stream()
-                .mapToDouble(e-> e.getAge())
+                .mapToDouble(e -> e.getAge())
                 .average().getAsDouble();
     }
 
     public void getSoutStudent() {
-       // studentRepository.findAll().forEach(System.out::println);
+        // studentRepository.findAll().forEach(System.out::println);
         List<Student> thread = new ArrayList<>(studentRepository.findAll());
         System.out.println(thread.get(0));
         System.out.println(thread.get(1));
-        Thread thread1 = new Thread(()-> {
+        Thread thread1 = new Thread(() -> {
             System.out.println(thread.get(2));
             System.out.println(thread.get(3));
-            thread.subList(2,3);
+            thread.subList(2, 3);
         });
         thread1.start();
-        Thread thread2 = new Thread(()-> {
+        Thread thread2 = new Thread(() -> {
             System.out.println(thread.get(4));
             System.out.println(thread.get(5));
         });
@@ -132,11 +133,25 @@ public class StudentService {
 
     public synchronized void getSoutStudentSynx() {
         List<Student> thread = new ArrayList<>(studentRepository.findAll());
-        System.out.println(thread.get(0));
-        System.out.println(thread.get(1));
-
-        new Thread(()-> {thread.subList(2,3);}).start();
-        new Thread(()-> {thread.subList(4,5);}).start();
+        doSout(thread);
+        new Thread(() -> {
+            doSout(thread);
+        }).start();
+        new Thread(() -> {
+            doSout(thread);
+        }).start();
     }
 
+    private synchronized void doSout(List<Student> students) {
+        if (students.size() - 1 < count) {
+            throw new RuntimeException();
+        }
+        synchronized (flag) {
+            System.out.println("students.get(count).getName() = " + students.get(count).getName());
+            count++;
+            System.out.println("students.get(count).getName() = " + students.get(count).getName());
+        }
+        count++;
+
+    }
 }
